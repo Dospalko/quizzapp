@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import { quizzes } from "../data.js";
 
@@ -74,18 +74,21 @@ const Page = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Quiz Page</h1>
+    <div className="container mx-auto p-4 max-w-md">
+      <h1 className="text-3xl font-bold text-blue-600 mb-4">Quiz Page</h1>
 
-      <div className="quiz-selection">
-        <label>Select a Quiz:</label>
+      <div className="quiz-selection mb-4">
+        <label className="block mb-2 text-blue-600">Select a Quiz:</label>
         <select
           value={activeQuiz.id}
           onChange={(e) => {
             const selectedQuizId = e.target.value;
-            const newSelectedQuiz = quizzes.find((quiz) => quiz.id === selectedQuizId);
+            const newSelectedQuiz = quizzes.find(
+              (quiz) => quiz.id === selectedQuizId
+            );
             setActiveQuiz(newSelectedQuiz);
           }}
+          className="border p-2 rounded-md w-full"
         >
           {quizzes.map((quiz) => (
             <option key={quiz.id} value={quiz.id}>
@@ -97,55 +100,73 @@ const Page = () => {
       <div>
         {!showResult ? (
           <div className="quiz-container">
-            <h3>
-              {" "}
-              Question: {activeQuestion + 1} / {questions.length}{" "}
-              <p> {questions[activeQuestion].question}</p>
+            <h3 className="text-lg font-semibold mb-2 text-blue-600">
+              Question: {activeQuestion + 1} / {questions.length}
             </h3>
+            <p className="mb-4">{questions[activeQuestion].question}</p>
             {questions[activeQuestion].answers.map((answer, idx) => (
               <li
                 key={idx}
                 onClick={() => onAnswerSelected(answer, idx)}
-                className={
-                  selectedAnswerIndex === idx ? "li-selected" : "li-hover"
-                }
+                className={`py-2 px-4 rounded-md cursor-pointer mb-2 ${
+                  selectedAnswerIndex === idx
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
               >
-                <span>{answer}</span>
+                {answer}
               </li>
             ))}
             {checked ? (
-              <button onClick={nextQuestion} className="btn">
+              <button
+                onClick={nextQuestion}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mt-4"
+              >
                 {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
               </button>
             ) : (
-              <button onClick={nextQuestion} disabled className="btn-disabled">
+              <button
+                onClick={nextQuestion}
+                disabled
+                className="bg-gray-400 text-white font-semibold py-2 px-4 rounded-md mt-4 cursor-not-allowed"
+              >
                 {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
               </button>
             )}
           </div>
         ) : (
           <div className="quiz-container">
-            <h3>Results :</h3>
-            <h3>Overall {(result.score / (questions.length * 5) * 100).toFixed(2)}%</h3>
+            <h3 className="text-lg font-semibold mb-4 text-blue-600">
+              Results :
+            </h3>
+            <h3 className="text-lg font-semibold text-blue-600">
+              Overall{" "}
+              {((result.score / (questions.length * 5)) * 100).toFixed(2)}%
+            </h3>
 
-            <p>
+            <p className="mb-2">
               Total Questions: <span>{questions.length}</span>
             </p>
-            <p>
+            <p className="mb-2">
               Total Score: <span>{result.score}</span>
             </p>
-            <p>
+            <p className="mb-2">
               Correct Answers: <span>{result.correctAnswers}</span>
             </p>
-            <p>
+            <p className="mb-4">
               Wrong Answers: <span>{result.wrongAnswers}</span>
             </p>
-            <button onClick={() => window.location.reload()}>Restart</button>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
+            >
+              Restart
+            </button>
           </div>
         )}
       </div>
     </div>
   );
-};
+}
 
 export default Page;
