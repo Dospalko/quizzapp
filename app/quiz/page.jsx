@@ -1,9 +1,9 @@
-"use client";
-import React, { useState } from "react";
+"use client"
+import React, { useState, useEffect } from "react";
+import { quizzes } from "../data.js";
 
-import { quiz } from "../data.js";
-
-const page = () => {
+const Page = () => {
+  const [activeQuiz, setActiveQuiz] = useState(quizzes[0]);
   const [activeQuestion, setActiveQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [checked, setChecked] = useState(false);
@@ -15,14 +15,31 @@ const page = () => {
     wrongAnswers: 0,
   });
 
-  const { questions } = quiz;
-  const { question, answers, correctAnswer } = questions[activeQuestion];
+  const { questions } = activeQuiz;
+
+  useEffect(() => {
+    // Reset the quiz state when the active quiz changes
+    setActiveQuestion(0);
+    setSelectedAnswer("");
+    setChecked(false);
+    setSelectedAnswerIndex(null);
+    setShowResult(false);
+    setResult({
+      score: 0,
+      correctAnswers: 0,
+      wrongAnswers: 0,
+    });
+  }, [activeQuiz]);
+
+  const switchQuiz = (quiz) => {
+    setActiveQuiz(quiz);
+  };
 
   //kontrola otazkzy
   const onAnswerSelected = (answer, idx) => {
     setChecked(true);
     setSelectedAnswerIndex(idx);
-    if (answer === correctAnswer) {
+    if (answer === questions[activeQuestion].correctAnswer) {
       setSelectedAnswer(true);
       console.log("true");
     } else {
@@ -30,6 +47,7 @@ const page = () => {
       console.log("false");
     }
   };
+
   const nextQuestion = () => {
     setSelectedAnswerIndex(null);
     setResult((prev) =>
@@ -44,28 +62,47 @@ const page = () => {
             wrongAnswers: prev.wrongAnswers + 1,
           }
     );
+
     if (activeQuestion !== questions.length - 1) {
       setActiveQuestion((prev) => prev + 1);
     } else {
       setActiveQuestion(0);
       setShowResult(true);
     }
+
     setChecked(false);
   };
+
   return (
     <div className="container">
       <h1>Quiz Page</h1>
-      <div>
-        <h2>
-          Question: {activeQuestion + 1}
-          <span>/{questions.length}</span>
-        </h2>
+
+      <div className="quiz-selection">
+        <label>Select a Quiz:</label>
+        <select
+          value={activeQuiz.id}
+          onChange={(e) => {
+            const selectedQuizId = e.target.value;
+            const newSelectedQuiz = quizzes.find((quiz) => quiz.id === selectedQuizId);
+            setActiveQuiz(newSelectedQuiz);
+          }}
+        >
+          {quizzes.map((quiz) => (
+            <option key={quiz.id} value={quiz.id}>
+              {quiz.name}
+            </option>
+          ))}
+        </select>
       </div>
       <div>
         {!showResult ? (
           <div className="quiz-container">
-            <h3>{questions[activeQuestion].question}</h3>
-            {answers.map((answer, idx) => (
+            <h3>
+              {" "}
+              Question: {activeQuestion + 1} / {questions.length}{" "}
+              <p> {questions[activeQuestion].question}</p>
+            </h3>
+            {questions[activeQuestion].answers.map((answer, idx) => (
               <li
                 key={idx}
                 onClick={() => onAnswerSelected(answer, idx)}
@@ -78,18 +115,19 @@ const page = () => {
             ))}
             {checked ? (
               <button onClick={nextQuestion} className="btn">
-                {activeQuestion === question.length - 1 ? "Finish" : "Next"}
+                {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
               </button>
             ) : (
               <button onClick={nextQuestion} disabled className="btn-disabled">
-                {activeQuestion === question.length - 1 ? "Finish" : "Next"}
+                {activeQuestion === questions.length - 1 ? "Finish" : "Next"}
               </button>
             )}
           </div>
         ) : (
           <div className="quiz-container">
-            <h3>Results</h3>
-            <h3>Overall {(result.score / 25) * 100}%</h3>
+            <h3>Results :</h3>
+            <h3>Overall {(result.score / (questions.length * 5) * 100).toFixed(2)}%</h3>
+
             <p>
               Total Questions: <span>{questions.length}</span>
             </p>
@@ -110,4 +148,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

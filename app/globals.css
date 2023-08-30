@@ -1,12 +1,16 @@
+/* Reset CSS */
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+/* Global Styles */
 html, body {
   overflow-x: hidden;
   background-color: #000925;
+  font-family: Arial, sans-serif;
+  color: #eee;
 }
 
 main {
@@ -18,43 +22,57 @@ h1, h2 {
 }
 
 h3 {
-  padding-bottom: 2rem;
   color: #000105;
   font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 button {
-  padding: 16px 8px;
+  padding: 12px;
   width: 100%;
   margin-top: 12px;
   font-size: 1rem;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   background-color: #808080;
   color: #f8f8f8;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+  background-color: #555;
+  color: #fff;
 }
 
 .btn-disabled {
   background-color: lightgray;
+  cursor: not-allowed;
+}
+
+ul {
+  list-style-type: none;
 }
 
 li {
-  list-style-type: none;
   cursor: pointer;
   margin: 9px 0;
-  padding: 16px 8px;
+  padding: 12px;
   color: #000105;
+  background-color: #f8f8f8;
   border: 1px solid lightgray;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.li-hover:hover {
+li:hover {
   background-color: #d8d8d8;
-  columns: #fff;
+  color: #000105;
 }
 
 .li-selected {
-  color: #fff;
   background-color: #000925;
+  color: #fff;
 }
 
 .container {
@@ -69,6 +87,7 @@ li {
   padding: 1rem;
   margin-top: 2rem;
   border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .container p {
