@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { quizzes } from "../data.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as regularStar} from "@fortawesome/free-solid-svg-icons";
 
 const Page = () => {
   const [activeQuiz, setActiveQuiz] = useState(quizzes[0]);
@@ -14,7 +17,7 @@ const Page = () => {
     correctAnswers: 0,
     wrongAnswers: 0,
   });
-
+  const [userRating, setUserRating] = useState(0);
   const { questions } = activeQuiz;
 
   useEffect(() => {
@@ -28,13 +31,19 @@ const Page = () => {
       score: 0,
       correctAnswers: 0,
       wrongAnswers: 0,
+     
     });
+    setUserRating(0);
   }, [activeQuiz]);
 
   const switchQuiz = (quiz) => {
     setActiveQuiz(quiz);
   };
-
+  const handleRatingClick = (rating) => {
+    // Handle user's rating
+    setUserRating(rating);
+    // You can also send this rating data to your backend or store it as needed.
+  };
   //kontrola otazkzy
   const onAnswerSelected = (answer, idx) => {
     setChecked(true);
@@ -79,7 +88,7 @@ const Page = () => {
 
       <div className="quiz-selection mb-4">
         <label className="block mb-2 text-blue-600">Select a Quiz:</label>
-        <select
+        {/* <select
           value={activeQuiz.id}
           onChange={(e) => {
             const selectedQuizId = e.target.value;
@@ -95,7 +104,20 @@ const Page = () => {
               {quiz.name}
             </option>
           ))}
-        </select>
+        </select> */}
+        <div className="flex space-x-2">
+          {quizzes.map((quiz) => (
+            <button
+              key={quiz.id}
+              onClick={() => switchQuiz(quiz)}
+              className={`bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md ${
+                activeQuiz.id === quiz.id ? "bg-blue-700" : ""
+              }`}
+            >
+              {quiz.name}
+            </button>
+          ))}
+        </div>
       </div>
       <div>
         {!showResult ? (
@@ -137,7 +159,7 @@ const Page = () => {
         ) : (
           <div className="quiz-container">
             <h3 className="text-lg font-semibold mb-4 text-blue-600">
-              Results :
+              Results:
             </h3>
             <h3 className="text-lg font-semibold text-blue-600">
               Overall{" "}
@@ -156,6 +178,30 @@ const Page = () => {
             <p className="mb-4">
               Wrong Answers: <span>{result.wrongAnswers}</span>
             </p>
+
+            <div className="mb-4">
+              <p className="text-lg font-semibold text-blue-600">
+                Rate this quiz:
+              </p>
+              <div className="flex space-x-2">
+                {[1, 2, 3, 4, 5].map((rating) => (
+                  <button
+                    key={rating}
+                    onClick={() => handleRatingClick(rating)}
+                    className={`text-xl ${
+                      rating <= userRating ? "text-yellow-400" : "text-gray-400"
+                    }`}
+                  >
+                    {rating <= userRating ? (
+                      <FontAwesomeIcon icon={solidStar} />
+                    ) : (
+                      <FontAwesomeIcon icon={regularStar} />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <button
               onClick={() => window.location.reload()}
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
@@ -167,6 +213,6 @@ const Page = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Page;
