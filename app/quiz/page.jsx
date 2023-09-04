@@ -1,10 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { firestore } from "firebase/firestore";
+
 import { quizzes } from "../data.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar as solidStar } from "@fortawesome/free-solid-svg-icons";
 import { faStar as regularStar} from "@fortawesome/free-solid-svg-icons";
-
+;
 const Page = () => {
   const [activeQuiz, setActiveQuiz] = useState(quizzes[0]);
   const [activeQuestion, setActiveQuestion] = useState(0);
@@ -19,6 +21,14 @@ const Page = () => {
   });
   const [userRating, setUserRating] = useState(0);
   const { questions } = activeQuiz;
+
+
+
+
+
+
+
+
 
   useEffect(() => {
     // Reset the quiz state when the active quiz changes

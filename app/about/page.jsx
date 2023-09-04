@@ -1,6 +1,7 @@
 import React from 'react'
 
 const AboutPage = () => {
+
   return (
     <div className="bg-gray-100 min-h-screen py-12">
       <div className="container mx-auto px-4">

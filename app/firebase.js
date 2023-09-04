@@ -1,13 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBlsvVXfjg10F1D7FJEsbdi8B9Sr8K7ymw",
   authDomain: "quizzlord-d4b2a.firebaseapp.com",
@@ -15,13 +10,9 @@ const firebaseConfig = {
   storageBucket: "quizzlord-d4b2a.appspot.com",
   messagingSenderId: "154944880324",
   appId: "1:154944880324:web:8b48af6ac20bb9afc0d391",
-  measurementId: "G-QTF2BJG0V3"
+  measurementId: "G-QTF2BJG0V3",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 export const auth = getAuth(app);
-const firestore = getFirestore(app); // Use getFirestore to access Firestore
-
-export { firestore };
